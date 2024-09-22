@@ -5,8 +5,8 @@ namespace VendasAPI.Data.Context
 {
     public class VendasDbContext : DbContext
     {
-        public VendasDbContext(DbContextOptions<VendasDbContext> options) 
-            : base(options) 
+        public VendasDbContext(DbContextOptions<VendasDbContext> options)
+            : base(options)
         {
         }
 
@@ -15,9 +15,17 @@ namespace VendasAPI.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VendaItem>().HasNoKey();
+            // Configura chave composta para VendaItem (ProdutoId e VendaId)
+            modelBuilder.Entity<VendaItem>()
+                .HasKey(vi => new { vi.ProdutoId, vi.VendaId });
+
+            // Configura relacionamento de 1:N entre Venda e VendaItem
+            modelBuilder.Entity<Venda>()
+                .HasMany(v => v.Itens)
+                .WithOne()
+                .HasForeignKey(vi => vi.VendaId);
+
             base.OnModelCreating(modelBuilder);
-            // Configurações adicionais podem ser feitas aqui
         }
     }
 }

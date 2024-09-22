@@ -17,6 +17,7 @@
     public class VendaItem
     {
         public Guid ProdutoId { get; set; }
+        public Guid VendaId { get; set; }
         public string ProdutoNome { get; set; }
         public int Quantidade { get; set; }
         public decimal ValorUnitario { get; set; }
